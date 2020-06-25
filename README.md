@@ -37,21 +37,6 @@ https://gitee.com/ahviplc/JustToolc
 ❤GoJustToolc > Go Tools For U (You)❤
 ```
 
-## changelog 
-
-### release v0.1
-
-> 在2commits处 tag v0.1 release.
-
-```markdown
-update README.md.
-33afaf7f LC <ahlc@sina.cn> on 2020/6/25 at 12:29
-```
-
-### release vx.x
-
-> TODO
-
 ## 如何安装运行测试
 
 ### 安装方式 使用go get
@@ -85,6 +70,21 @@ require (
 
 3: go run main.go
 ```
+
+## changelog 
+
+### release v0.1.0
+
+> 在5commits处 tag v0.1.0 release.
+
+```markdown
+update go.mod.
+c8c6dadb LC <ahlc@sina.cn> on 2020/6/25 at 13:31
+```
+
+### release vx.x.x
+
+> TODO
 
 ## about me
 ```markdown
