@@ -41,11 +41,11 @@ https://gitee.com/ahviplc/JustToolc
 
 ### release v0.1
 
-> 在1commits处 tag v0.1 release.
+> 在2commits处 tag v0.1 release.
 
 ```markdown
-first commit. 
-5366b0e0 LC <ahlc@sina.cn> on 2020/6/25 at 12:20
+update README.md.
+33afaf7f LC <ahlc@sina.cn> on 2020/6/25 at 12:29
 ```
 
 ### release vx.x
