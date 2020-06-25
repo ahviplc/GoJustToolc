@@ -1,9 +1,9 @@
 package main
 
 import (
-	"GoJustToolc/UConsole"
-	"GoJustToolc/UUtils"
 	"fmt"
+	"github.com/ahviplc/GoJustToolc/UConsole"
+	"github.com/ahviplc/GoJustToolc/UUtils"
 	"github.com/tidwall/gjson"
 )
 

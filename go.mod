@@ -1,4 +1,4 @@
-module GoJustToolc
+module github.com/ahviplc/GoJustToolc
 
 go 1.13
 
