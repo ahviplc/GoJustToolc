@@ -30,4 +30,8 @@ func main() {
 	UConsole.Log(value.String())
 	UConsole.Log(gjson.Get(json, "name.last").String())
 	UConsole.Log(gjson.Get(json, "age").String())
+
+	// UConsole.AUTHORS UConsole.VERSION
+	UConsole.Log(UConsole.AUTHORS)
+	UConsole.Log(UConsole.VERSION)
 }
