@@ -56,7 +56,7 @@ module your_project_name
 go 1.14
 
 require (
-    github.com/ahviplc/GoJustToolc v0.1
+    github.com/ahviplc/GoJustToolc v0.1.0
 )
 ```
 > 也可使用 github.com/ahviplc/GoJustToolc latest 获取最新版
