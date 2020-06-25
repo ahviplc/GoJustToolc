@@ -38,9 +38,19 @@ https://gitee.com/ahviplc/JustToolc
 ```
 
 ## changelog 
+
+### release v0.1
+
+> 在1commits处 tag v0.1 release.
+
 ```markdown
-TODO
+first commit. 
+5366b0e0 LC <ahlc@sina.cn> on 2020/6/25 at 12:20
 ```
+
+### release vx.x
+
+> TODO
 
 ## 如何安装运行测试
 
