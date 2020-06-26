@@ -20,6 +20,8 @@ func Log(args ...interface{}) {
 			logData = logData + strconv.FormatFloat(float64(arg.(float32)), 'f', -1, 64)
 		case float64:
 			logData = logData + strconv.FormatFloat(arg.(float64), 'f', -1, 64)
+		case bool:
+			logData = logData + strconv.FormatBool(arg.(bool))
 		}
 	}
 	fmt.Println(logData)
