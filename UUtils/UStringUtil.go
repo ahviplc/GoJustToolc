@@ -1,6 +1,104 @@
 package UUtils
 
-import "strings"
+import (
+	"strings"
+	"unicode"
+)
+
+// 字符串是否为空白 空白的定义如下:
+// 1.为null
+// 2.为不可见字符 (如空格)
+// 3.""
+func IsBlank(in string) bool {
+	if len(in) == 0 || in == "" {
+		return true
+	}
+	inRune := []rune(in)
+	for _, r := range inRune {
+		// 是否为空白符号
+		if unicode.IsSpace(r) {
+			return true
+		}
+	}
+	return false
+}
+
+// 如果对象是字符串是否为空白 空白的定义如下:
+// 1.为null
+// 2.为不可见字符 (如空格)
+// 3.""
+func IsBlankIfStr(in interface{}) bool {
+	_, isFlag := in.(string) // in2, isFlag := in.(string)
+	if isFlag {
+		return IsBlank(in.(string)) // return IsBlank(in2)
+	}
+	return false
+}
+
+// IsBlankIfStr 写法2 方法效果一样
+func IsBlankIfStr2(in interface{}) bool {
+	in2, isFlag := in.(string)
+	if isFlag {
+		return IsBlank(in2)
+	}
+	return false
+}
+
+// 字符串是否为非空白 非空白的定义如下:
+// 1.不为null
+// 2.不为不可见字符 (如空格)
+// 3.不为""
+func IsNotBlank(in string) bool {
+	return false == IsBlank(in)
+}
+
+// 如果对象是字符串是否为非空白 非空白的定义如下:
+// 1.不为null
+// 2.不为不可见字符 (如空格)
+// 3.不为""
+func IsNotBlankIfStr(in interface{}) bool {
+	_, isFlag := in.(string)
+	if isFlag {
+		return IsNotBlank(in.(string))
+	}
+	return false
+}
+
+// 字符串是否为空 空的定义如下:
+// 1.为null
+// 2.""
+func IsEmpty(in string) bool {
+	return len(in) == 0 || in == ""
+}
+
+// 如果对象是字符串是否为空字符串 空的定义如下:
+// 1.为null
+// 2.""
+func IsEmptyIfStr(in interface{}) bool {
+	_, isFlag := in.(string)
+	if isFlag {
+		return IsEmpty(in.(string))
+	}
+	return false
+}
+
+// 字符串是否为非空 非空的定义如下:
+// 1.不为null
+// 2.不为""
+func IsNotEmpty(in string) bool {
+	return false == IsEmpty(in)
+}
+
+// 如果对象是字符串是否为非空字符串 非空的定义如下:
+// 1.不为null
+// 2.不为""
+func IsNotEmptyIfStr(in interface{}) bool {
+	_, isFlag := in.(string)
+	if isFlag {
+		return IsNotEmpty(in.(string))
+	}
+	return false
+}
 
 // snake string, XxYy to xx_yy , XxYY to xx_yy
 func SnakeString(s string) string {
@@ -64,11 +162,9 @@ func CamelStringFirstLower(s string) string {
 			j = true
 			continue
 		}
-
 		if i == 0 && d >= 'A' && d <= 'Z' {
 			d = d + 32
 		}
-
 		data = append(data, d)
 	}
 	return string(data[:])
