@@ -50,6 +50,14 @@ To start using GoJustToolc, install Go and run go get:
 
 > 如果是 Go modules 的项目，您还可以直接编辑 go.mod 文件
 
+> 可使用代理:
+
+> https://mirrors.aliyun.com/goproxy
+ 
+> https://goproxy.cn
+
+> https://goproxy.io
+
 ```markdown
 module your_project_name
 
