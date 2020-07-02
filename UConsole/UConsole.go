@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-//打印控制台日志
+// 打印控制台日志
 func Log(args ...interface{}) {
 	logData := ""
 	for _, arg := range args {
@@ -25,4 +25,9 @@ func Log(args ...interface{}) {
 		}
 	}
 	fmt.Println(logData)
+}
+
+// 打印一条直线并换行 类似: ----------- * 10
+func PrintAStraightLine() {
+	Log("-----------------------------------------------------------------------------------------------------")
 }
