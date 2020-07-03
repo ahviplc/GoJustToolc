@@ -2,6 +2,7 @@ package UUtils
 
 import (
 	"github.com/ahviplc/GoJustToolc/UConsole"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -58,21 +59,23 @@ func TestIsEmpty(t *testing.T) {
 
 // Test UStringUtil.IsEmptyIfStr()
 func TestIsEmptyIfStr(t *testing.T) {
-	UConsole.Log(IsEmptyIfStr(1))           // false
-	UConsole.Log(IsEmptyIfStr(""))          // true
-	UConsole.Log(IsEmptyIfStr(" "))         // false
-	UConsole.Log(IsEmptyIfStr("SH vip lc")) // false
-	UConsole.Log(IsEmptyIfStr("我爱你"))       // false
-	UConsole.Log(IsEmptyIfStr("我爱 你"))      // false
+	UConsole.Log(IsEmptyIfStr(1))                            // false
+	UConsole.Log(IsEmptyIfStr(""))                           // true
+	UConsole.Log(IsEmptyIfStr(" "))                          // false
+	UConsole.Log(IsEmptyIfStr("SH vip lc"))                  // false
+	UConsole.Log(IsEmptyIfStr("我爱你"))                        // false
+	UConsole.Log(IsEmptyIfStr("我爱 你"))                       // false
+	assert.False(t, IsEmptyIfStr("我爱 你"), "False is false!") // 断言为false
 }
 
 // Test UStringUtil.IsNotEmpty()
 func TestIsNotEmpty(t *testing.T) {
-	UConsole.Log(IsNotEmpty(""))          // false
-	UConsole.Log(IsNotEmpty(" "))         // true
-	UConsole.Log(IsNotEmpty("SH vip lc")) // true
-	UConsole.Log(IsNotEmpty("我爱你"))       // true
-	UConsole.Log(IsNotEmpty("我爱 你"))      // true
+	UConsole.Log(IsNotEmpty(""))                        // false
+	UConsole.Log(IsNotEmpty(" "))                       // true
+	UConsole.Log(IsNotEmpty("SH vip lc"))               // true
+	UConsole.Log(IsNotEmpty("我爱你"))                     // true
+	UConsole.Log(IsNotEmpty("我爱 你"))                    // true
+	assert.True(t, IsNotEmpty("我爱 你"), "True is true!") // 断言为true
 }
 
 // Test UStringUtil.IsNotEmptyIfStr()
@@ -92,10 +95,16 @@ func TestUStringUtilSnakeString(t *testing.T) {
 
 // Test UStringUtil.ToUpper()
 func TestUStringUtilToUpper(t *testing.T) {
-	UConsole.Log(ToUpper("ah VIP lc"))
+	UConsole.Log(ToUpper("ah VIP lc")) // AHVIPLC
 }
 
 // Test UStringUtil.ToLower()
 func TestUStringUtilToLower(t *testing.T) {
-	UConsole.Log(ToLower("SH vip lc"))
+	UConsole.Log(ToLower("SH vip lc")) // shviplc
+
+	// assert equality
+	assert.Equal(t, "shviplc", ToLower("SH vip lc"), "they should be equal") // 断言为二者相等
+
+	// assert inequality
+	assert.NotEqual(t, "shviplc not be equal", ToLower("SH vip lc"), "they should not be equal") // 断言为二者不相等
 }
