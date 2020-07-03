@@ -2,6 +2,8 @@ package UDateTimeUtil
 
 import (
 	"fmt"
+	"github.com/ahviplc/GoJustToolc/UConsole"
+	"github.com/ahviplc/GoJustToolc/UUtils"
 	"time"
 )
 
@@ -36,22 +38,14 @@ func NowDateTime(layoutArgs ...string) string {
 	return fmt.Sprint(time.Now().Format(DefaultLayout))
 }
 
-// time.Time类型转成string字符串类型时间
-// in 输入的time.Time类型时间
-// inLayout 时间模板
-func TimeToStrTime(in time.Time, layout string) string {
-	return fmt.Sprint(in.Format(layout))
+// 获取当前时间(CST UT+8)
+func GetNowDateTimeCST() time.Time {
+	return StrTimeToTime(NowDateTime(), DefaultLayout)
 }
 
-// string字符串类型时间转成time.Time类型
-// in 输入的字符串类型时间
-// layout 时间模板
-func StrTimeToTime(in string, layout string) time.Time {
-	out, err := time.Parse(layout, in) // 走完这步 time 是 世界协调时间 (UTC)了
-	if err != nil {
-		panic(err)
-	}
-	return out
+// 获取当前时间(UTC)
+func GetNowDateTimeUTC() time.Time {
+	return StrTimeToTime(NowDateTime(), DefaultLayout).UTC()
 }
 
 // 获取指定时间
@@ -127,23 +121,79 @@ func GetNowNanoTimeStamp() int64 {
 
 // 获取指定时间的时间戳 秒
 func GetTimeStamp(in string, layout string) int64 {
-	// time.Now().Unix() 直接就是 CST 的 秒时间戳 1593768863
-	// 但是StrTimeToTime()转成的time走Unix()会比 CST 的 秒时间戳 多8小时(也就是多28800秒) 1593797663
+	// time.Now().Unix()直接就是(CST UT+8)的秒时间戳 1593768863
+	// 但是StrTimeToTime()转成UTC的time走Unix()会比(CST UT+8)的秒时间戳多8小时(也就是多28800秒) 1593797663
 	// 所以需要减去 8h
-	h, _ := time.ParseDuration("-1h")
-	outTime := StrTimeToTime(in, layout).Add(8 * h)
-	return outTime.Unix()
+	// 下面写法废弃
+	// h, _ := time.ParseDuration("-1h")
+	// outTime := StrTimeToTime(in, layout).Add(8 * h) // 使用这个写法 因为StrTimeToTime(in, layout)返回的是当前时间+8h的UTC 所以要减去8h得到当前时间
+	// 现在StrTimeToTime()方法直接返回的就是
+	return StrTimeToTime(in, layout).Unix() // 返回的是(CST UT+8)的time的时间戳 秒
 }
 
-// 获取指定时间的时间戳 秒 方法2
-func GetTimeStamp2(in string, layout string) int64 {
-	outTime, _ := time.ParseInLocation(layout, in, time.Local) // 返回的是 CST
-	return outTime.Unix()
+// 获取指定时间的时间戳 毫秒
+func GetMilliSecondTimeStamp(in string, layout string) int64 {
+	return StrTimeToTime(in, layout).UnixNano() / 1e6 // 返回的是(CST UT+8)的time的时间戳 秒
 }
 
-// 获取比指定时间多8h的时间戳 秒
-func GetTimeStampPlus8H(in string, layout string) int64 {
-	// time.Now().Unix() 直接就是 CST 的 秒时间戳 1593768863
-	// 但是StrTimeToTime()转成的time走Unix()会比 CST 的 秒时间戳 多8小时(也就是多28800秒) 1593797663
-	return StrTimeToTime(in, layout).Unix()
+// 获取指定时间的时间戳 纳秒
+func GetNanoTimeStamp(in string, layout string) int64 {
+	return StrTimeToTime(in, layout).UnixNano() // 返回的是(CST UT+8)的time的时间戳 秒
+}
+
+// 把日期时间加减年、月、日、时、分、秒后得到新的日期时间
+// datepart yy-年、MM-月、dd-日、HH-时、mm-分、ss-秒
+// plusSubSum   加减因子 例如:+1 -1
+// thisTime 需要加减的日期时间
+// 备注: ParseDuration介绍
+// ParseDuration解析一个时间段字符串。一个时间段字符串是一个序列，每个片段包含可选的正负号,
+// 十进制数、可选的小数部分和单位后缀，如"300ms"、"-1.5h"、"2h45m"。
+// 合法的单位有"ns"纳秒,"us","µs"、"ms"毫秒、"s"秒、"m"分钟、"h"。
+func AddDataTime(datepart string, plusSubSum int, thisTime time.Time) time.Time {
+	switch datepart {
+	case "yy":
+		thatTime := thisTime.AddDate(plusSubSum, 0, 0)
+		return thatTime
+	case "MM":
+		thatTime := thisTime.AddDate(0, plusSubSum, 0)
+		return thatTime
+	case "dd":
+		thatTime := thisTime.AddDate(0, 0, plusSubSum)
+		return thatTime
+	case "HH":
+		h, _ := time.ParseDuration(UUtils.IntToString(plusSubSum) + "h")
+		thatTime := thisTime.Add(h)
+		return thatTime
+	case "mm":
+		m, _ := time.ParseDuration(UUtils.IntToString(plusSubSum) + "m")
+		thatTime := thisTime.Add(m)
+		return thatTime
+	case "ss":
+		m, _ := time.ParseDuration(UUtils.IntToString(plusSubSum) + "s")
+		thatTime := thisTime.Add(m)
+		return thatTime
+	}
+	UConsole.Log(datepart, "是不合法的datepart,代替输出当前时间->")
+	return GetNowDateTimeCST()
+}
+
+// time.Time类型转成string字符串类型时间
+// in 输入的time.Time类型时间
+// inLayout 时间模板
+func TimeToStrTime(in time.Time, layout string) string {
+	return fmt.Sprint(in.Format(layout))
+}
+
+// string字符串类型时间转成time.Time类型
+// in 输入的字符串类型时间
+// layout 时间模板
+func StrTimeToTime(in string, layout string) time.Time {
+	// 走完这步 time是世界协调时间(UTC)了 不是(CST UT+8)
+	// 就没有time.Now()返回(CST UT+8)的效果 所以废弃此方法
+	// out, err := time.Parse(layout, in)
+	out, err := time.ParseInLocation(layout, in, time.Local) // 此方法返回的time是(CST UT+8) 中国标准时间 China Standard Time UT+8:00
+	if err != nil {
+		panic(err)
+	}
+	return out
 }

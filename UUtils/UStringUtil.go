@@ -1,6 +1,7 @@
 package UUtils
 
 import (
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -178,4 +179,9 @@ func ToUpper(oldData string) string {
 // 字符串去除空格并将所有字母小写
 func ToLower(oldData string) string {
 	return strings.ToLower(strings.Replace(oldData, " ", "", -1))
+}
+
+// int转string
+func IntToString(in int) string {
+	return strconv.Itoa(in)
 }

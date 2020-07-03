@@ -6,6 +6,7 @@ import (
 	"github.com/ahviplc/GoJustToolc/UUtils"
 	"github.com/ahviplc/GoJustToolc/UUtils/UDateTimeUtil"
 	"github.com/tidwall/gjson"
+	"time"
 )
 
 // some test main
@@ -40,5 +41,14 @@ func main() {
 	UConsole.Log(UDateTimeUtil.NowDateTime())
 	UConsole.Log(UDateTimeUtil.NowDateTime(UDateTimeUtil.DefaultLayout))
 	UConsole.Log(UDateTimeUtil.NowDateTime("20060102150405"))
+	UConsole.PrintAStraightLine()
 
+	// time.Now()
+	UConsole.PrintTypeAndValue(time.Now()) // 类型(Type):time.Time  值(Value):2020-07-03 23:16:10.98863 +0800 CST m=+0.000319369
+	// UTC
+	UConsole.PrintTypeAndValue(UDateTimeUtil.GetNowDateTimeUTC())
+	UConsole.PrintTypeAndValue(UDateTimeUtil.StrTimeToTime(UDateTimeUtil.NowDateTime(), UDateTimeUtil.DefaultLayout).UTC()) // 类型(Type):time.Time  值(Value):2020-07-03 15:11:05 +0000 UTC
+	// CST 比UTC多8小时(也就是多28800秒)
+	UConsole.PrintTypeAndValue(UDateTimeUtil.GetNowDateTimeCST())
+	UConsole.PrintTypeAndValue(UDateTimeUtil.StrTimeToTime(UDateTimeUtil.NowDateTime(), UDateTimeUtil.DefaultLayout)) // 类型(Type):time.Time  值(Value):2020-07-03 23:11:05 +0800 CST
 }
