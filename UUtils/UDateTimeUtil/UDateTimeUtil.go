@@ -135,6 +135,12 @@ func GetTimeStamp(in string, layout string) int64 {
 	return outTime.Unix()
 }
 
+// 获取指定时间的时间戳 秒 方法2
+func GetTimeStamp2(in string, layout string) int64 {
+	outTime, _ := time.ParseInLocation(layout, in, time.Local) // 返回的是 CST
+	return outTime.Unix()
+}
+
 // 获取比指定时间多8h的时间戳 秒
 func GetTimeStampPlus8H(in string, layout string) int64 {
 	// time.Now().Unix() 直接就是 CST 的 秒时间戳 1593768863

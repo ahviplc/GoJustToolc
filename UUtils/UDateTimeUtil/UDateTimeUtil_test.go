@@ -126,10 +126,12 @@ func TestGetNowNanoTimeStamp(t *testing.T) {
 	// 类型(Type):int64  值(Value):1593767333204879600
 }
 
-// Test UDateTimeUtil.GetTimeStamp() UDateTimeUtil.GetTimeStampPlus8H()
+// Test UDateTimeUtil.GetTimeStamp() UDateTimeUtil.GetTimeStamp2() UDateTimeUtil.GetTimeStampPlus8H()
 func TestGetTimeStamp(t *testing.T) {
 	UConsole.PrintTypeAndValue(GetTimeStamp(NowDateTime(), DefaultLayout))
+	UConsole.PrintTypeAndValue(GetTimeStamp2(NowDateTime(), DefaultLayout))
 	UConsole.PrintTypeAndValue(GetTimeStampPlus8H(NowDateTime(), DefaultLayout)) // 返回的是比传入时间多8h(也就是多28800秒)的秒时间戳
+	// 类型(Type):int64  值(Value):1593768863
 	// 类型(Type):int64  值(Value):1593768863
 	// 二者相差 8h (也就是28800秒)
 	// 类型(Type):int64  值(Value):1593797663
