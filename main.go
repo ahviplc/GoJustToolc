@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/ahviplc/GoJustToolc/UConsole"
 	"github.com/ahviplc/GoJustToolc/UUtils"
+	"github.com/ahviplc/GoJustToolc/UUtils/UDateTimeUtil"
 	"github.com/tidwall/gjson"
 )
 
@@ -34,4 +35,10 @@ func main() {
 	// UConsole.AUTHORS UConsole.VERSION
 	UConsole.Log(UConsole.AUTHORS)
 	UConsole.Log(UConsole.VERSION)
+
+	// 输出当前日期时间
+	UConsole.Log(UDateTimeUtil.NowDateTime())
+	UConsole.Log(UDateTimeUtil.NowDateTime(UDateTimeUtil.DefaultLayout))
+	UConsole.Log(UDateTimeUtil.NowDateTime("20060102150405"))
+
 }

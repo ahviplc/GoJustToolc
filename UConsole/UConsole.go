@@ -31,3 +31,17 @@ func Log(args ...interface{}) {
 func PrintAStraightLine() {
 	Log("-----------------------------------------------------------------------------------------------------")
 }
+
+// 打印类型和值
+func PrintTypeAndValue(in ...interface{}) {
+	// 备注: 这里len(in) == 0 则会传进来 nil 也是可以range操作的 下面的代码不写也可
+	// if len(in) == 0 {
+	// 	return
+	// }
+
+	// 遍历 in
+	for _, v := range in {
+		fmt.Printf("类型(Type):%T  值(Value):%v", v, v)
+		Log()
+	}
+}
