@@ -177,6 +177,26 @@ func AddDataTime(datepart string, plusSubSum int, thisTime time.Time) time.Time 
 	return GetNowDateTimeCST()
 }
 
+// 计算两个时间差
+// datepart string dd-日、HH-时、mm-分、ss-秒
+// time1
+// time2
+// 计算 time1-time2的时间差
+func SubDataTime(datepart string, time1 time.Time, time2 time.Time) string {
+	switch datepart {
+	case "dd":
+		return fmt.Sprintln(time1.Sub(time2).Hours()/24, "天")
+	case "HH":
+		return fmt.Sprintln(time1.Sub(time2).Hours(), "小时")
+	case "mm":
+		return fmt.Sprintln(time1.Sub(time2).Minutes(), "分钟")
+	case "ss":
+		return fmt.Sprintln(time1.Sub(time2).Seconds(), "秒")
+	}
+	UConsole.Log(datepart, "是不合法的datepart,代替输出当前字符串时间->")
+	return NowDateTime()
+}
+
 // time.Time类型转成string字符串类型时间
 // in 输入的time.Time类型时间
 // inLayout 时间模板

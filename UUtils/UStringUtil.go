@@ -185,3 +185,26 @@ func ToLower(oldData string) string {
 func IntToString(in int) string {
 	return strconv.Itoa(in)
 }
+
+// string转int
+func StringToInt(in string) int {
+	out, err := strconv.Atoi(in)
+	if err != nil {
+		panic(err)
+	}
+	return out
+}
+
+// int64转string
+func Int64ToString(in int64) string {
+	return strconv.FormatInt(in, 10)
+}
+
+// string转int64
+func StringToInt64(in string) int64 {
+	out, err := strconv.ParseInt(in, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	return out
+}

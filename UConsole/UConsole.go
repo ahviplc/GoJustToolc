@@ -2,6 +2,7 @@ package UConsole
 
 import (
 	"fmt"
+	"github.com/ahviplc/GoJustToolc/UUtils"
 	"strconv"
 )
 
@@ -13,9 +14,9 @@ func Log(args ...interface{}) {
 		case string:
 			logData = logData + arg.(string)
 		case int:
-			logData = logData + strconv.Itoa(arg.(int))
+			logData = logData + UUtils.IntToString(arg.(int))
 		case int64:
-			logData = logData + strconv.FormatInt(arg.(int64), 10)
+			logData = logData + UUtils.Int64ToString(arg.(int64))
 		case float32:
 			logData = logData + strconv.FormatFloat(float64(arg.(float32)), 'f', -1, 64)
 		case float64:

@@ -204,6 +204,65 @@ func TestAddDataTime(t *testing.T) {
 	// -----------------------------------------------------------------------------------------------------
 }
 
+func TestSubDataTime(t *testing.T) {
+	tim1 := GetNowDateTimeCST()
+	// 一天前
+	tim2 := AddDataTime("dd", -1, tim1)
+	UConsole.Log("当前时间:")
+	UConsole.PrintTypeAndValue(tim1)
+	UConsole.Log("一天前:")
+	UConsole.PrintTypeAndValue(tim2)
+	UConsole.PrintAStraightLine()
+	// 日
+	UConsole.PrintTypeAndValue(SubDataTime("dd", tim1, tim2))
+	UConsole.PrintTypeAndValue(SubDataTime("dd", tim2, tim1))
+	UConsole.PrintAStraightLine()
+	// 小时
+	UConsole.PrintTypeAndValue(SubDataTime("HH", tim1, tim2))
+	UConsole.PrintTypeAndValue(SubDataTime("HH", tim2, tim1))
+	UConsole.PrintAStraightLine()
+	// 分钟
+	UConsole.PrintTypeAndValue(SubDataTime("mm", tim1, tim2))
+	UConsole.PrintTypeAndValue(SubDataTime("mm", tim2, tim1))
+	UConsole.PrintAStraightLine()
+	// 秒
+	UConsole.PrintTypeAndValue(SubDataTime("ss", tim1, tim2))
+	UConsole.PrintTypeAndValue(SubDataTime("ss", tim2, tim1))
+	UConsole.PrintAStraightLine()
+	// 来个不合法的 不存在的datepart 来个"**"
+	UConsole.PrintTypeAndValue(SubDataTime("**", tim1, tim2))
+	UConsole.PrintAStraightLine()
+
+	// 当前时间:
+	// 类型(Type):time.Time  值(Value):2020-07-04 11:13:40 +0800 CST
+	// 一天前:
+	// 类型(Type):time.Time  值(Value):2020-07-03 11:13:40 +0800 CST
+	//-----------------------------------------------------------------------------------------------------
+	//类型(Type):string  值(Value):1 天
+	//
+	//类型(Type):string  值(Value):-1 天
+	//
+	//-----------------------------------------------------------------------------------------------------
+	//类型(Type):string  值(Value):24 小时
+	//
+	//类型(Type):string  值(Value):-24 小时
+	//
+	//-----------------------------------------------------------------------------------------------------
+	//类型(Type):string  值(Value):1440 分钟
+	//
+	//类型(Type):string  值(Value):-1440 分钟
+	//
+	//-----------------------------------------------------------------------------------------------------
+	//类型(Type):string  值(Value):86400 秒
+	//
+	//类型(Type):string  值(Value):-86400 秒
+	//
+	//-----------------------------------------------------------------------------------------------------
+	//**是不合法的datepart,代替输出当前字符串时间->
+	//类型(Type):string  值(Value):2020-07-04 11:13:40
+	//-----------------------------------------------------------------------------------------------------
+}
+
 // Test UDateTimeUtil.TimeToStrTime()
 func TestTimeToStrTime(t *testing.T) {
 	// TimeToStrTime
