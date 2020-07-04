@@ -50,13 +50,21 @@ To start using GoJustToolc, install Go and run go get:
 
 > 如果是 Go modules 的项目，您还可以直接编辑 go.mod 文件
 
+> 可使用代理:
+
+> https://mirrors.aliyun.com/goproxy
+ 
+> https://goproxy.cn
+
+> https://goproxy.io
+
 ```markdown
 module your_project_name
 
 go 1.14
 
 require (
-    github.com/ahviplc/GoJustToolc v0.1.0
+    github.com/ahviplc/GoJustToolc v0.2.0
 )
 ```
 > 也可使用 github.com/ahviplc/GoJustToolc latest 获取最新版
@@ -82,9 +90,21 @@ update go.mod.
 c8c6dadb LC <ahlc@sina.cn> on 2020/6/25 at 13:31
 ```
 
+### release v0.2.0
+
+> 在#commits处 tag v0.2.0 release.
+
+```markdown
+TODO
+```
+
 ### release vx.x.x
 
-> TODO
+> 在Xcommits处 tag vx.x.x release.
+
+```markdown
+TODO
+```
 
 ## about me
 ```markdown
