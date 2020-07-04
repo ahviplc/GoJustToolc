@@ -92,10 +92,10 @@ c8c6dadb LC <ahlc@sina.cn> on 2020/6/25 at 13:31
 
 ### release v0.2.0
 
-> 在#commits处 tag v0.2.0 release.
+> 在19commits处 tag v0.2.0 release.
 
 ```markdown
-TODO
+3d867825 LC <ahlc@sina.cn> on 2020/7/4 at 11:47
 ```
 
 ### release vx.x.x
