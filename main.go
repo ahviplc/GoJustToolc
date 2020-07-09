@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/ahviplc/GoJustToolc/UConsole"
+	"github.com/ahviplc/GoJustToolc/UMode"
 	"github.com/ahviplc/GoJustToolc/UUtils"
 	"github.com/ahviplc/GoJustToolc/UUtils/UDateTimeUtil"
 	"github.com/tidwall/gjson"
@@ -51,4 +52,10 @@ func main() {
 	// CST 比UTC多8小时(也就是多28800秒)
 	UConsole.PrintTypeAndValue(UDateTimeUtil.GetNowDateTimeCST())
 	UConsole.PrintTypeAndValue(UDateTimeUtil.StrTimeToTime(UDateTimeUtil.NowDateTime(), UDateTimeUtil.DefaultLayout)) // 类型(Type):time.Time  值(Value):2020-07-03 23:11:05 +0800 CST
+
+	// 打印出当前Mode
+	UConsole.Log(UMode.UMode) // 0 默认是0为dubug模式
+	// 改变Mode为 release.
+	UMode.SetMode(UMode.ReleaseMode)
+	UConsole.Log(UMode.UMode) // 1 改成了1为release模式
 }

@@ -2,8 +2,10 @@ package UConsole
 
 import (
 	"fmt"
+	"github.com/ahviplc/GoJustToolc/UMode"
 	"github.com/ahviplc/GoJustToolc/UUtils"
 	"strconv"
+	"strings"
 )
 
 // 打印控制台日志
@@ -30,7 +32,7 @@ func Log(args ...interface{}) {
 
 // 打印一条直线并换行 类似: ----------- * 10
 func PrintAStraightLine() {
-	Log("-----------------------------------------------------------------------------------------------------")
+	Log("--------------------------------------------------------------------------------------------------------------")
 }
 
 // 打印类型和值
@@ -44,5 +46,31 @@ func PrintTypeAndValue(in ...interface{}) {
 	for _, v := range in {
 		fmt.Printf("类型(Type):%T  值(Value):%v", v, v)
 		Log()
+	}
+}
+
+// 判断当前模式是否是debug模式
+// IsDebugging returns true if the GoJustToolc is running in debug mode.
+// Use UMode.SetMode(UMode.DebugMode) to disable debug mode.
+func IsDebugging() bool {
+	return UMode.UMode == UMode.DebugCode
+}
+
+// debug打印
+func DebugPrint(format string, values ...interface{}) {
+	if IsDebugging() {
+		if !strings.HasSuffix(format, "\n") {
+			format += "\n"
+		}
+		fmt.Fprintf(UMode.DefaultWriter, "[GoJustToolc-debug] "+format, values...)
+	}
+}
+
+// debug打印错误
+func DebugPrintError(err error) {
+	if err != nil {
+		if IsDebugging() {
+			fmt.Fprintf(UMode.DefaultErrorWriter, "[GoJustToolc-debug] [ERROR] %v\n", err)
+		}
 	}
 }
