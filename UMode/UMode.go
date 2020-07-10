@@ -5,6 +5,9 @@ import (
 	"os"
 )
 
+// UMode.go说明
+// GoJustToolc模式定义工具
+
 // EnvGoJustToolcMode indicates environment name for GoJustToolc mode.
 const EnvGoJustToolcMode = "GoJustToolc_MODE"
 

@@ -1,0 +1,23 @@
+{
+  "GoToolcUrl": "https://github.com/ahviplc/GoJustToolc",
+  "NowDateTime": "2020-07-05 13:53:17",
+  "UseGoToolc": "df19b321bba50602ee2539f72788d60a",
+  "author": "LC<ahlc@sina.cn>",
+  "message": "I am root",
+  "projectName": "GoJustToolc",
+  "version": "v0.1.0",
+  "contents": {
+    "post1": "1",
+    "post2": "2"
+  },
+  "contents2": [
+    {
+      "post1": "3-1",
+      "post2": "4-1"
+    },
+    {
+      "post1": "3-2",
+      "post2": "4-2"
+    }
+  ]
+}

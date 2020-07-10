@@ -110,6 +110,6 @@ TODO
 ```markdown
 By LC
 寄语:一人一世界,一树一菩提!~LC
-Version 0.1 From 20200625
+Version 0.1.0 From 20200625
 ```
 

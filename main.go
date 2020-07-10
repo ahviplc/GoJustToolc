@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/ahviplc/GoJustToolc/UConfig"
 	"github.com/ahviplc/GoJustToolc/UConsole"
 	"github.com/ahviplc/GoJustToolc/UMode"
 	"github.com/ahviplc/GoJustToolc/UUtils"
@@ -58,4 +59,14 @@ func main() {
 	// 改变Mode为 release.
 	UMode.SetMode(UMode.ReleaseMode)
 	UConsole.Log(UMode.UMode) // 1 改成了1为release模式
+
+	// UConfig
+	UConsole.PrintAStraightLine()
+	v := UConfig.InitUConfig("UConfig", "demo", "json")
+	UConsole.Log(UConfig.GetJson(v, "author", false))            // LC<ahlc@sina.cn>
+	UConsole.Log(UConfig.GetJson(v, "GoToolcUrl", false))        // https://github.com/ahviplc/GoJustToolc
+	UConsole.Log(UConfig.GetJson(v, "message", false))           // I am root
+	UConsole.Log(UConfig.GetJson(v, "contents.post1", false))    // 1
+	UConsole.Log(UConfig.GetJson(v, "contents2.#.post1", false)) // ["3-1","3-2"]
+	UConsole.PrintAStraightLine()
 }
