@@ -1,4 +1,4 @@
-package UUtils
+package UMd5Util
 
 import (
 	"crypto/md5"

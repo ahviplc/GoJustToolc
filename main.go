@@ -5,8 +5,8 @@ import (
 	"github.com/ahviplc/GoJustToolc/UConfig"
 	"github.com/ahviplc/GoJustToolc/UConsole"
 	"github.com/ahviplc/GoJustToolc/UMode"
-	"github.com/ahviplc/GoJustToolc/UUtils"
 	"github.com/ahviplc/GoJustToolc/UUtils/UDateTimeUtil"
+	"github.com/ahviplc/GoJustToolc/UUtils/UStringUtil"
 	"github.com/tidwall/gjson"
 	"time"
 )
@@ -14,10 +14,10 @@ import (
 // some test main
 func main() {
 	// ToUpper ToLower
-	fmt.Println(UUtils.ToUpper("ah vip lc"))
-	fmt.Println(UUtils.ToLower("SH vip LC"))
-	UConsole.Log(UUtils.ToUpper("ah vip lc"))
-	UConsole.Log(UUtils.ToLower("SH vip LC"))
+	fmt.Println(UStringUtil.ToUpper("ah vip lc"))
+	fmt.Println(UStringUtil.ToLower("SH vip LC"))
+	UConsole.Log(UStringUtil.ToUpper("ah vip lc"))
+	UConsole.Log(UStringUtil.ToLower("SH vip LC"))
 
 	// UConsole
 	UConsole.Log("我就是一个长长的字符串")

@@ -1,4 +1,4 @@
-package UUtils
+package UFileUtil
 
 import (
 	"io/ioutil"

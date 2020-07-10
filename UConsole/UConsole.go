@@ -3,7 +3,7 @@ package UConsole
 import (
 	"fmt"
 	"github.com/ahviplc/GoJustToolc/UMode"
-	"github.com/ahviplc/GoJustToolc/UUtils"
+	"github.com/ahviplc/GoJustToolc/UUtils/UStringUtil"
 	"strconv"
 	"strings"
 )
@@ -16,9 +16,9 @@ func Log(args ...interface{}) {
 		case string:
 			logData = logData + arg.(string)
 		case int:
-			logData = logData + UUtils.IntToString(arg.(int))
+			logData = logData + UStringUtil.IntToString(arg.(int))
 		case int64:
-			logData = logData + UUtils.Int64ToString(arg.(int64))
+			logData = logData + UStringUtil.Int64ToString(arg.(int64))
 		case float32:
 			logData = logData + strconv.FormatFloat(float64(arg.(float32)), 'f', -1, 64)
 		case float64:

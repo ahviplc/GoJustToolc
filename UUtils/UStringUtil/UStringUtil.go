@@ -1,4 +1,4 @@
-package UUtils
+package UStringUtil
 
 import (
 	"strconv"
@@ -207,4 +207,14 @@ func StringToInt64(in string) int64 {
 		panic(err)
 	}
 	return out
+}
+
+// 判断某个字符串在不在某个字符串切片里 true 在 false 不在
+func StringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
 }

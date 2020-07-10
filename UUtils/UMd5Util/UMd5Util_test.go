@@ -1,4 +1,4 @@
-package UUtils
+package UMd5Util
 
 import (
 	"github.com/ahviplc/GoJustToolc/UConsole"

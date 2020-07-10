@@ -2,6 +2,7 @@ package UConfig
 
 import (
 	"github.com/ahviplc/GoJustToolc/UConsole"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -11,6 +12,11 @@ func TestGetJavaHome(t *testing.T) {
 	UConsole.PrintTypeAndValue(GetJavaHome(""))
 	// D:\Java\jdk1.8.0_211
 	// 类型(Type):string  值(Value):D:\Java\jdk1.8.0_211
+}
+
+// Test GetUserHomeDir
+func TestGetUserHomeDir(t *testing.T) {
+	UConsole.Log(GetUserHomeDir()) // C:\Users\Administrator
 }
 
 // Test GetJson
@@ -139,4 +145,13 @@ func TestGetAll(t *testing.T) {
 	// https://github.com/ahviplc/GoJustToolc
 	// LC
 	// :8199
+}
+
+// Test IsSupportedConfigType
+func TestIsSupportedConfigType(t *testing.T) {
+	// assert equality
+	assert.Equal(t, true, IsSupportedConfigType("json"), "Should be true")    // 断言为二者相等
+	assert.Equal(t, false, IsSupportedConfigType("json2"), "Should be false") // 断言为二者相等
+	assert.True(t, IsSupportedConfigType("json"), "Should be true")
+	assert.False(t, IsSupportedConfigType("json2"), "Should be false")
 }

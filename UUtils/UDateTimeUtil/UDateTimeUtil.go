@@ -3,7 +3,7 @@ package UDateTimeUtil
 import (
 	"fmt"
 	"github.com/ahviplc/GoJustToolc/UConsole"
-	"github.com/ahviplc/GoJustToolc/UUtils"
+	"github.com/ahviplc/GoJustToolc/UUtils/UStringUtil"
 	"time"
 )
 
@@ -161,15 +161,15 @@ func AddDataTime(datepart string, plusSubSum int, thisTime time.Time) time.Time 
 		thatTime := thisTime.AddDate(0, 0, plusSubSum)
 		return thatTime
 	case "HH":
-		h, _ := time.ParseDuration(UUtils.IntToString(plusSubSum) + "h")
+		h, _ := time.ParseDuration(UStringUtil.IntToString(plusSubSum) + "h")
 		thatTime := thisTime.Add(h)
 		return thatTime
 	case "mm":
-		m, _ := time.ParseDuration(UUtils.IntToString(plusSubSum) + "m")
+		m, _ := time.ParseDuration(UStringUtil.IntToString(plusSubSum) + "m")
 		thatTime := thisTime.Add(m)
 		return thatTime
 	case "ss":
-		m, _ := time.ParseDuration(UUtils.IntToString(plusSubSum) + "s")
+		m, _ := time.ParseDuration(UStringUtil.IntToString(plusSubSum) + "s")
 		thatTime := thisTime.Add(m)
 		return thatTime
 	}
