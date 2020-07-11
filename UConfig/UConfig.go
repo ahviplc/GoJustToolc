@@ -194,6 +194,15 @@ func GetAll(v *viper.Viper, path string, indentFlag bool) string {
 	return gjson.Get(string(jsonTemp), UStringUtil.ToLower(path)).String()
 }
 
+// 只返回配置文件读取解析所有配置内容的 map[string]interface{}
+// AllSettings merges all settings and returns them as a map[string]interface{}.
+// 全部类型配置文件读取解析 支持【JSON, TOML, YAML, HCL, envfile and Java properties config files】
+// 【"json", "toml", "yaml", "yml", "properties", "props", "prop", "hcl", "dotenv", "env", "ini"】
+// v Viper结构指针
+func GetAllSettingsMap(v *viper.Viper) map[string]interface{} {
+	return v.AllSettings()
+}
+
 // 判断是否支持某类型的配置文件读取解析 true 是支持 false 不支持
 // configType 要判断是否倍支持的配置文件类型 支持的配置文件类型:【"json", "toml", "yaml", "yml", "properties", "props", "prop", "hcl", "dotenv", "env", "ini"】
 func IsSupportedConfigType(configType string) bool {

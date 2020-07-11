@@ -1,8 +1,10 @@
 package UConfig
 
 import (
+	"fmt"
 	"github.com/ahviplc/GoJustToolc/UConsole"
 	"github.com/stretchr/testify/assert"
+	"reflect"
 	"testing"
 )
 
@@ -145,6 +147,78 @@ func TestGetAll(t *testing.T) {
 	// https://github.com/ahviplc/GoJustToolc
 	// LC
 	// :8199
+}
+
+// Test GetAllSettingsMap
+func TestGetAllSettingsMap(t *testing.T) {
+	v := InitUConfig(".", "demo", "json")
+	allSettingsMap := GetAllSettingsMap(v)
+	fmt.Println(v.AllSettings())
+	// 打印
+	UConsole.PrintAStraightLine()
+	fmt.Println(v.AllKeys())
+	UConsole.PrintAStraightLine()
+	//fmt.Printf("GoToolcUrl:%s author:%s \n", v.Get("GoToolcUrl"), v.Get("author"))
+	for k, v := range v.AllKeys() {
+		fmt.Println(k, " -> ", v)
+	}
+	UConsole.PrintAStraightLine()
+	UConsole.PrintAStraightLine()
+	for k, v := range v.AllSettings() {
+		fmt.Println(k, " -> ", v)
+	}
+	UConsole.PrintAStraightLine()
+	UConsole.PrintAStraightLine()
+	// allSettingsMap := v.AllSettings()
+	UConsole.Log("循环遍历key为contents的子Map,结果如下:")
+	// 使用【.(map[string]interface{})】将【allSettingsMap["contents"]】强制转成map
+	// 使用类型断言 if contentsMap, ok := allSettingsMap["contents"].(map[int]interface{})
+	// 如果 allSettingsMap["contents"]是(map[int]interface{})类型的话,ok就是true,contentsMap就是(map[int]interface{})类型allSettingsMap["contents"]的值.
+	// 否则ok为false，contentsMap就是(map[int]interface{})类型的初始化 nil
+	if contentsMap, ok := allSettingsMap["contents"].(map[string]interface{}); ok {
+		UConsole.Log("类型转换成功:", ok)
+		for k, v := range contentsMap {
+			fmt.Println(k, " -> ", v)
+		}
+	} else {
+		UConsole.Log("无效的类型转换:", ok) // 如果无效类型转换 则 contentsMap 会是初始值 nil
+	}
+	UConsole.PrintAStraightLine()
+	UConsole.PrintTypeAndValue(allSettingsMap["contents2"])
+	fmt.Println(reflect.TypeOf(allSettingsMap["contents2"])) // []interface {}
+	c2 := allSettingsMap["contents2"]
+	for k, v := range c2.([]interface{}) {
+		fmt.Println(k, " -> ", v)
+	}
+	UConsole.PrintAStraightLine()
+	if contents2Map, ok := allSettingsMap["contents2"].([]interface{}); ok {
+		UConsole.Log("类型转换成功:", ok)
+		for k, v := range contents2Map {
+			fmt.Println(k, " -> ", v)
+		}
+	} else {
+		UConsole.Log("无效的类型转换:", ok) // 如果无效类型转换 则 contents2Map 会是初始值 nil
+	}
+	UConsole.PrintAStraightLine()
+	if contents2Map, ok := allSettingsMap["contents2"].([]interface{})[0].(map[string]interface{}); ok {
+		UConsole.Log("类型转换成功:", ok)
+		UConsole.PrintTypeAndValue(contents2Map) // 类型(Type):map[string]interface {}  值(Value):map[post1:3 post2:4]
+		for k, v := range contents2Map {
+			fmt.Println(k, " -> ", v)
+		}
+	} else {
+		UConsole.Log("无效的类型转换:", ok) // 如果无效类型转换 则 contents2Map 会是初始值 nil
+	}
+	UConsole.PrintAStraightLine()
+
+	// 判断key是否存在
+	keyTemp := "contents3" // 不存在
+	if i, ok := allSettingsMap[keyTemp]; ok {
+		UConsole.Log(keyTemp, "-key-存在")
+		UConsole.PrintTypeAndValue(i)
+	} else {
+		UConsole.Log(keyTemp, "-key-不存在")
+	}
 }
 
 // Test IsSupportedConfigType
