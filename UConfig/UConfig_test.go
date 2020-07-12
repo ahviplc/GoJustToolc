@@ -221,6 +221,27 @@ func TestGetAllSettingsMap(t *testing.T) {
 	}
 }
 
+// Test GetAllSettingsJson
+func TestGetAllSettingsJson(t *testing.T) {
+	v := InitUConfig(".", "demo", "json")
+	// Ugly
+	UConsole.Log(GetAllSettingsJson(v, false))
+	UConsole.PrintAStraightLine()
+	// Pretty
+	UConsole.Log(GetAllSettingsJson(v, true))
+	UConsole.PrintAStraightLine()
+	v = InitUConfig(".", "demo2", "yaml") // 这里的configName如果也是demo 它回去读取 demo.json
+	UConsole.Log(GetAllSettingsJson(v, false))
+	UConsole.PrintAStraightLine()
+	UConsole.Log(GetAllSettingsJson(v, true))
+	UConsole.PrintAStraightLine()
+	v = InitUConfig(".", "demo3", "toml") // 这里的configName如果也是demo 它回去读取 demo.json
+	UConsole.Log(GetAllSettingsJson(v, false))
+	UConsole.PrintAStraightLine()
+	UConsole.Log(GetAllSettingsJson(v, true))
+	UConsole.PrintAStraightLine()
+}
+
 // Test IsSupportedConfigType
 func TestIsSupportedConfigType(t *testing.T) {
 	// assert equality

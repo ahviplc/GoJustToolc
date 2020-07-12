@@ -7,6 +7,7 @@ import (
 	"github.com/ahviplc/GoJustToolc/UUtils/UStringUtil"
 	"github.com/spf13/viper"
 	"github.com/tidwall/gjson"
+	"github.com/tidwall/pretty"
 	"os"
 	"runtime"
 )
@@ -110,15 +111,7 @@ func InitUConfig(configPath string, configName string, configType string) *viper
 // ===============================================================
 func GetJson(v *viper.Viper, path string, indentFlag bool) string {
 	allSettingsMap := v.AllSettings()
-	var jsonTemp []byte
-	var errTemp error
-	if indentFlag {
-		// 相比 Marshal 方法 MarshalIndent 方法对Json多了一些格式处理
-		jsonTemp, errTemp = json.MarshalIndent(allSettingsMap, "", "\t") //格式化编码
-	} else {
-		jsonTemp, errTemp = json.Marshal(allSettingsMap) //格式化编码
-	}
-
+	jsonTemp, errTemp := dealWithIndentFlag(indentFlag, allSettingsMap)
 	if errTemp != nil {
 		fmt.Printf("err:%s\n", errTemp)
 		UConsole.DebugPrintError(errTemp)
@@ -132,15 +125,7 @@ func GetJson(v *viper.Viper, path string, indentFlag bool) string {
 // path 详细说明同GetJson()一样
 func GetYaml(v *viper.Viper, path string, indentFlag bool) string {
 	allSettingsMap := v.AllSettings()
-	var jsonTemp []byte
-	var errTemp error
-	if indentFlag {
-		// 相比 Marshal 方法 MarshalIndent 方法对Json多了一些格式处理
-		jsonTemp, errTemp = json.MarshalIndent(allSettingsMap, "", "\t") //格式化编码
-	} else {
-		jsonTemp, errTemp = json.Marshal(allSettingsMap) //格式化编码
-	}
-
+	jsonTemp, errTemp := dealWithIndentFlag(indentFlag, allSettingsMap)
 	if errTemp != nil {
 		fmt.Printf("err:%s\n", errTemp)
 		UConsole.DebugPrintError(errTemp)
@@ -154,15 +139,7 @@ func GetYaml(v *viper.Viper, path string, indentFlag bool) string {
 // path 详细说明同GetJson()一样
 func GetToml(v *viper.Viper, path string, indentFlag bool) string {
 	allSettingsMap := v.AllSettings()
-	var jsonTemp []byte
-	var errTemp error
-	if indentFlag {
-		// 相比 Marshal 方法 MarshalIndent 方法对Json多了一些格式处理
-		jsonTemp, errTemp = json.MarshalIndent(allSettingsMap, "", "\t") //格式化编码
-	} else {
-		jsonTemp, errTemp = json.Marshal(allSettingsMap) //格式化编码
-	}
-
+	jsonTemp, errTemp := dealWithIndentFlag(indentFlag, allSettingsMap)
 	if errTemp != nil {
 		fmt.Printf("err:%s\n", errTemp)
 		UConsole.DebugPrintError(errTemp)
@@ -178,15 +155,7 @@ func GetToml(v *viper.Viper, path string, indentFlag bool) string {
 // path 详细说明同GetJson()一样
 func GetAll(v *viper.Viper, path string, indentFlag bool) string {
 	allSettingsMap := v.AllSettings()
-	var jsonTemp []byte
-	var errTemp error
-	if indentFlag {
-		// 相比 Marshal 方法 MarshalIndent 方法对Json多了一些格式处理
-		jsonTemp, errTemp = json.MarshalIndent(allSettingsMap, "", "\t") //格式化编码
-	} else {
-		jsonTemp, errTemp = json.Marshal(allSettingsMap)
-	}
-
+	jsonTemp, errTemp := dealWithIndentFlag(indentFlag, allSettingsMap)
 	if errTemp != nil {
 		fmt.Printf("err:%s\n", errTemp)
 		UConsole.DebugPrintError(errTemp)
@@ -203,6 +172,22 @@ func GetAllSettingsMap(v *viper.Viper) map[string]interface{} {
 	return v.AllSettings()
 }
 
+// 只返回配置文件读取解析所有配置内容的 json
+// AllSettings merges all settings and returns them as a json.
+// 全部类型配置文件读取解析 支持【JSON, TOML, YAML, HCL, envfile and Java properties config files】
+// 【"json", "toml", "yaml", "yml", "properties", "props", "prop", "hcl", "dotenv", "env", "ini"】
+// v Viper结构指针
+// indentFlag 是否缩进 true【Pretty,缩进】 false【Ugly,不缩进】
+func GetAllSettingsJson(v *viper.Viper, indentFlag bool) string {
+	allSettingsMap := v.AllSettings()
+	jsonTemp, errTemp := dealWithIndentFlag(indentFlag, allSettingsMap)
+	if errTemp != nil {
+		fmt.Printf("err:%s\n", errTemp)
+		UConsole.DebugPrintError(errTemp)
+	}
+	return string(jsonTemp)
+}
+
 // 判断是否支持某类型的配置文件读取解析 true 是支持 false 不支持
 // configType 要判断是否倍支持的配置文件类型 支持的配置文件类型:【"json", "toml", "yaml", "yml", "properties", "props", "prop", "hcl", "dotenv", "env", "ini"】
 func IsSupportedConfigType(configType string) bool {
@@ -210,4 +195,21 @@ func IsSupportedConfigType(configType string) bool {
 		return true
 	}
 	return false
+}
+
+// 处理 indentFlag allSettingsMap
+// indentFlag 是否缩进 true【Pretty,缩进】 false【Ugly,不缩进】
+// allSettingsMap 需要处理的类型为map[string]interface{}的配置内容
+func dealWithIndentFlag(indentFlag bool, allSettingsMap map[string]interface{}) ([]byte, error) {
+	var jsonTemp []byte
+	var errTemp error
+	if indentFlag {
+		// 相比 Marshal 方法 MarshalIndent 方法对Json多了一些格式处理
+		jsonTemp, errTemp = json.MarshalIndent(allSettingsMap, "", "\t") //格式化编码
+		jsonTemp = pretty.Pretty(jsonTemp)
+	} else {
+		jsonTemp, errTemp = json.Marshal(allSettingsMap)
+		jsonTemp = pretty.Ugly(jsonTemp)
+	}
+	return jsonTemp, errTemp
 }
