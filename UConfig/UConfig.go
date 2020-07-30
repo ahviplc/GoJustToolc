@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/ahviplc/GoJustToolc/UConsole"
+	"github.com/ahviplc/GoJustToolc/UUtils/UJsonUtil"
 	"github.com/ahviplc/GoJustToolc/UUtils/UStringUtil"
 	"github.com/spf13/viper"
 	"github.com/tidwall/gjson"
-	"github.com/tidwall/pretty"
 	"os"
 	"runtime"
 )
@@ -206,10 +206,10 @@ func dealWithIndentFlag(indentFlag bool, allSettingsMap map[string]interface{}) 
 	if indentFlag {
 		// 相比 Marshal 方法 MarshalIndent 方法对Json多了一些格式处理
 		jsonTemp, errTemp = json.MarshalIndent(allSettingsMap, "", "\t") //格式化编码
-		jsonTemp = pretty.Pretty(jsonTemp)
+		jsonTemp = UJsonUtil.Pretty(jsonTemp)
 	} else {
 		jsonTemp, errTemp = json.Marshal(allSettingsMap)
-		jsonTemp = pretty.Ugly(jsonTemp)
+		jsonTemp = UJsonUtil.Ugly(jsonTemp)
 	}
 	return jsonTemp, errTemp
 }
