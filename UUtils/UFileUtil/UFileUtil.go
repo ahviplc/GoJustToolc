@@ -14,6 +14,11 @@ import (
 	"strings"
 )
 
+// 获取当前操作系统的目录分割符
+func GetOSSeparator() string {
+	return string(filepath.Separator)
+}
+
 // 获取指定目录下的所有文件，不进入下一级目录搜索，可以匹配后缀过滤。
 func ListDirFile(dirPth string, suffix string) (files []string, err error) {
 	files = make([]string, 0, 10)
@@ -123,7 +128,7 @@ func Dir(file string) string {
 	return path.Dir(file)
 }
 
-// InsureDir
+// InsureDir()
 func InsureDir(path string) error {
 	if IsExist(path) {
 		return nil
@@ -131,8 +136,8 @@ func InsureDir(path string) error {
 	return os.MkdirAll(path, os.ModePerm)
 }
 
-// Ext
-// 获取文件类型后缀
+// Ext()
+// 获取文件扩展名Ext 文件类型后缀
 func Ext(file string) string {
 	return path.Ext(file)
 }
@@ -199,7 +204,7 @@ func RealPath(file string) (string, error) {
 }
 
 // get file modified time
-// 获取文件修改时间戳
+// 获取文件修改时间对应的时间戳 秒
 func FileMTime(file string) (int64, error) {
 	f, e := os.Stat(file)
 	if e != nil {

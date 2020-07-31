@@ -4,9 +4,16 @@ import (
 	"fmt"
 	"github.com/ahviplc/GoJustToolc/UConsole"
 	"github.com/ahviplc/GoJustToolc/UUtils/UDateTimeUtil"
+	"github.com/ahviplc/GoJustToolc/UUtils/URuntimeUtil"
 	"io/ioutil"
 	"testing"
 )
+
+// Test UFileUtil.GetOSSeparator()
+// 获取当前操作系统的目录分割符
+func TestGetOSSeparator(t *testing.T) {
+	UConsole.Log(GetOSSeparator())
+}
 
 // Test UFileUtil.ListDirFile()
 // 获取指定目录下的所有文件，不进入下一级目录搜索，可以匹配后缀过滤。
@@ -38,23 +45,34 @@ func TestWalkDirFile(t *testing.T) {
 		fmt.Println(v)
 	}
 	// 输出:
-	// C:\Users\Administrator\AppData\Local\Temp\VSCode Crashes\operation_log.txt
-	// C:\Users\Administrator\AppData\Local\Temp\sgsi\LC.txt
+	// win下:
+	// 【C:\Users\Administrator\AppData\Local\Temp\VSCode Crashes\operation_log.txt】
+	// 【C:\Users\Administrator\AppData\Local\Temp\sgsi\LC.txt】
+
+	// mac下:
+	// 【/private/var/folders/lc/jvxkwmxn4xz60k5qqp426j9w0000gn/T/com.sogou.pinyin/00000001/e9f224427d2d50b0a4d41625474d9cc1/uud_added.txt】
+	// 【/private/var/folders/lc/jvxkwmxn4xz60k5qqp426j9w0000gn/T/com.sogou.pinyin/00000001/uud_added.txt】
 }
 
 // Test UFileUtil.GetCurrentDirectory()
 func TestGetCurrentDirectory(t *testing.T) {
-	UConsole.Log(GetCurrentDirectory()) // 【/private/var/folders/lc/jvxkwmxn4xz60k5qqp426j9w0000gn/T】【win -> C:/Users/Administrator/AppData/Local/Temp】
+	UConsole.Log(GetCurrentDirectory())
+	// 【mac -> /private/var/folders/lc/jvxkwmxn4xz60k5qqp426j9w0000gn/T】
+	// 【win -> C:/Users/Administrator/AppData/Local/Temp】
 }
 
 // Test UFileUtil.GetRootDir()
 func TestGetRootDir(t *testing.T) {
-	UConsole.Log(GetRootDir()) // 【C:\Users\Administrator\AppData\Local\Temp\】
+	UConsole.Log(GetRootDir())
+	// 【win -> C:\Users\Administrator\AppData\Local\Temp\】
+	// 【mac -> /private/var/folders/lc/jvxkwmxn4xz60k5qqp426j9w0000gn/T/】
 }
 
 // Test UFileUtil.GetExecFilePath()
 func TestGetExecFilePath(t *testing.T) {
-	UConsole.Log(GetExecFilePath()) // 【C:\Users\Administrator\AppData\Local\Temp\___TestGetExecFilePath_in_github_com_ahviplc_GoJustToolc_UUtils_UFileUtil.exe】
+	UConsole.Log(GetExecFilePath())
+	// 【win -> C:\Users\Administrator\AppData\Local\Temp\___TestGetExecFilePath_in_github_com_ahviplc_GoJustToolc_UUtils_UFileUtil.exe】
+	// 【mac -> /private/var/folders/lc/jvxkwmxn4xz60k5qqp426j9w0000gn/T/___TestGetExecFilePath_in_github_com_ahviplc_GoJustToolc_UUtils_UFileUtil】
 }
 
 // Test UFileUtil.CheckFileIsExist()
@@ -66,22 +84,33 @@ func TestCheckFileIsExist(t *testing.T) {
 // Test UFileUtil.SelfPath()
 func TestSelfPath(t *testing.T) {
 	out := SelfPath()
-	UConsole.Log(out) // 【C:\Users\Administrator\AppData\Local\Temp\___TestSelfPath_in_github_com_ahviplc_GoJustToolc_UUtils_UFileUtil.exe】
+	UConsole.Log(out)
+	// 【win -> C:\Users\Administrator\AppData\Local\Temp\___TestSelfPath_in_github_com_ahviplc_GoJustToolc_UUtils_UFileUtil.exe】
+	// 【mac -> /private/var/folders/lc/jvxkwmxn4xz60k5qqp426j9w0000gn/T/___TestSelfPath_in_github_com_ahviplc_GoJustToolc_UUtils_UFileUtil】
 }
 
 // Test UFileUtil.SelfDir()
 func TestSelfDir(t *testing.T) {
 	out := SelfDir()
-	UConsole.Log(out) // 【C:\Users\Administrator\AppData\Local\Temp】
+	UConsole.Log(out)
+	// 【win -> C:\Users\Administrator\AppData\Local\Temp】
+	// 【mac -> /private/var/folders/lc/jvxkwmxn4xz60k5qqp426j9w0000gn/T】
 }
 
 // 定义一个文件路径
-var filePath = "d:/LC.txt"
+var filePath = ""
 
 // init 写入文件内容
 func init() {
+	if URuntimeUtil.IsWinOS() {
+		filePath = "d:/LC.txt"
+	}
+	if URuntimeUtil.IsMacOS() {
+		filePath = "/Users/themacoflc/Desktop/MacDeskTemp/LC.txt"
+	}
 	content := "1001"
 	data := []byte(content)
+	// 文件为空 会自己创建文件 并向文件写入内容
 	if ioutil.WriteFile(filePath, data, 0666) == nil {
 		fmt.Println("写入成功")
 	}
@@ -96,7 +125,9 @@ func TestBasename(t *testing.T) {
 // Test UFileUtil.Dir()
 // 获取文件目录
 func TestDir(t *testing.T) {
-	UConsole.Log(Dir(filePath)) // c:
+	UConsole.Log(Dir(filePath))
+	//【win -> d:】
+	//【mac -> /Users/themacoflc/Desktop/MacDeskTemp】
 }
 
 // Test UFileUtil.FileToInt64()
@@ -120,7 +151,7 @@ func TestFileToUint64(t *testing.T) {
 }
 
 // Test UFileUtil.Ext()
-// 获取文件类型后缀
+// 获取文件扩展名Ext 文件类型后缀
 func TestExt(t *testing.T) {
 	out := Ext(filePath)
 	fmt.Println(out) // .txt
@@ -129,13 +160,19 @@ func TestExt(t *testing.T) {
 // Test UFileUtil.Rename()
 // 文件重命名
 func TestRename(t *testing.T) {
-	Rename(filePath, Dir(filePath)+"/"+"LC2.txt")
+	err := Rename(filePath, Dir(filePath)+GetOSSeparator()+"LC2.txt")
+	if err != nil {
+		panic(err)
+	}
 }
 
 // Test UFileUtil.Unlink()
 // 删除文件
 func TestUnlink(t *testing.T) {
-	Unlink(filePath)
+	err := Unlink(filePath)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // Test UFileUtil.IsFile()
@@ -159,11 +196,13 @@ func TestRealPath(t *testing.T) {
 	if err != nil {
 		t.Errorf("RealPath err: %v \n", err.Error())
 	}
-	fmt.Println(out) // 【C:\_developSoftKu\ideaIU-2019.1.3.win\#GOPATHCodeKu\src\GoJustToolc\UUtils\UFileUtil/UFileUtil.go】
+	fmt.Println(out)
+	// 【win -> C:\_developSoftKu\ideaIU-2019.1.3.win\#GOPATHCodeKu\src\GoJustToolc\UUtils\UFileUtil/UFileUtil.go】
+	// 【mac -> /Volumes/MacOS-SSD-LCKu/DevelopSoftKu/go/GOPATH/src/GoJustToolc/UUtils/UFileUtil/UFileUtil.go】
 }
 
 // Test UFileUtil.FileMTime()
-// 获取文件修改时间戳
+// 获取文件修改时间对应的时间戳 秒
 func TestFileMTime(t *testing.T) {
 	rs, err := FileMTime(filePath)
 	if err != nil {
