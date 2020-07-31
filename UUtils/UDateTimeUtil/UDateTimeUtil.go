@@ -340,3 +340,10 @@ func GetDateTimeEnd(in, fromFormat string) (result string, err error) {
 	tt = time.Date(tt.Year(), tt.Month(), tt.Day(), 23, 59, 59, 0, loc)
 	return tt.Format(DefaultLayout), nil
 }
+
+// 秒时间戳转成字符串时间
+// in 输入的时间戳时间
+// 输出2006-01-02 15:04:05格式字符串类型时间
+func TimeStampToTimeStr(in int64) string {
+	return time.Unix(in, 0).Format(DefaultLayout)
+}

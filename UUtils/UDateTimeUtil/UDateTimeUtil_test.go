@@ -412,3 +412,10 @@ func TestGetDateTimeEnd(t *testing.T) {
 	// 类型(Type):string  值(Value):2020-07-31 23:59:59
 	UConsole.PrintAStraightLine()
 }
+
+// Test UDateTimeUtil.TimeStampToTimeStr()
+func TestTimeStampToTimeStr(t *testing.T) {
+	out := GetNowSecondTimeStamp()
+	UConsole.Log(out)                     // 1596186309
+	UConsole.Log(TimeStampToTimeStr(out)) // 2020-07-31 17:05:09
+}
