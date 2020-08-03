@@ -347,3 +347,21 @@ func GetDateTimeEnd(in, fromFormat string) (result string, err error) {
 func TimeStampToTimeStr(in int64) string {
 	return time.Unix(in, 0).Format(DefaultLayout)
 }
+
+// WeekAround returns the date of monday and sunday for current week
+// 输出当前时间所在周的周一和周日的日期 输出格式为 20060102
+func WeekAround() (monday, sunday string) {
+	now := time.Now()
+	offset := int(time.Monday - now.Weekday())
+	if offset > 0 {
+		offset = -6
+	}
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
+	monday = today.AddDate(0, 0, offset).Format("20060102")
+	offset = int(time.Sunday - now.Weekday())
+	if offset < 0 {
+		offset += 7
+	}
+	sunday = today.AddDate(0, 0, offset).Format("20060102")
+	return
+}

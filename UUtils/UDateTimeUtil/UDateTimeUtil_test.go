@@ -419,3 +419,12 @@ func TestTimeStampToTimeStr(t *testing.T) {
 	UConsole.Log(out)                     // 1596186309
 	UConsole.Log(TimeStampToTimeStr(out)) // 2020-07-31 17:05:09
 }
+
+// Test UDateTimeUtil.WeekAround()
+func TestWeekAround(t *testing.T) {
+	monday, sunday := WeekAround()
+	UConsole.Log(monday, "-", sunday)
+	// now time: 2020年8月3日13:48:40
+	// 输出:
+	// 20200803-20200809
+}

@@ -1,8 +1,18 @@
 package URuntimeUtil
 
-import "runtime"
+import (
+	"bytes"
+	"fmt"
+	"math"
+	"net"
+	"os/exec"
+	"runtime"
+	"strconv"
+	"strings"
+)
 
-// go运行时工具类
+// go运行时工具类 runtime
+// 系统工具类 system 含ip处理相关
 
 // 获取当前操作系统名称
 // mac -> darwin
@@ -57,3 +67,165 @@ func IsLinuxOS() bool {
 	}
 	return false
 }
+
+// ----------------------------------------------------------------------------------------
+
+// ip dns
+
+// IP2Long converts a string containing an (IPv4) Internet Protocol dotted address into a long integer.
+func IP2Long(ip string) uint32 {
+	ipv4 := net.ParseIP(ip).To4()
+	if ipv4 == nil {
+		return 0
+	}
+	return uint32(ipv4[0])<<24 | uint32(ipv4[1])<<16 | uint32(ipv4[2])<<8 | uint32(ipv4[3])
+}
+
+// Long2IP converts an long integer address into a string in (IPv4) Internet standard dotted format.
+func Long2IP(ip uint32) string {
+	if ip > math.MaxUint32 {
+		return ""
+	}
+	return net.IPv4(byte(ip>>24), byte(ip>>16), byte(ip>>8), byte(ip)).String()
+}
+
+// LocalIP() 返回本地ip
+func LocalIP() (string, error) {
+	addr, err := net.ResolveUDPAddr("udp", "1.2.3.4:1")
+	if err != nil {
+		return "", err
+	}
+	conn, err := net.DialUDP("udp", nil, addr)
+	if err != nil {
+		return "", err
+	}
+	defer conn.Close()
+	host, _, err := net.SplitHostPort(conn.LocalAddr().String())
+	if err != nil {
+		return "", err
+	}
+	// host = "10.180.2.66"
+	return host, nil
+}
+
+// LocalDnsName()
+// 本地dns名称
+// just use in linux and mac
+func LocalDnsName() (hostname string, err error) {
+	if IsWinOS() {
+		err = fmt.Errorf("LocalDnsName() can not use in winOS,just use in linux and mac")
+		return "", err
+	}
+	var ip string
+	ip, err = LocalIP()
+	if err != nil {
+		return
+	}
+	cmd := exec.Command("host", ip)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err = cmd.Run()
+	if err != nil {
+		return
+	}
+	tmp := out.String()
+	arr := strings.Split(tmp, ".\n")
+	if len(arr) > 1 {
+		content := arr[0]
+		arr = strings.Split(content, " ")
+		return arr[len(arr)-1], nil
+	}
+	err = fmt.Errorf("parse host %s fail", ip)
+	return
+}
+
+// GrabEphemeralPort()
+//【uint16 无符号 16 位整型 (0 到 65535)】【int16 有符号 16 位整型 (-32768 到 32767)】
+func GrabEphemeralPort() (port uint16, err error) {
+	var listener net.Listener
+	var portStr string
+	var p int
+	listener, err = net.Listen("tcp", ":0")
+	if err != nil {
+		return
+	}
+	defer listener.Close()
+	_, portStr, err = net.SplitHostPort(listener.Addr().String())
+	if err != nil {
+		return
+	}
+	p, err = strconv.Atoi(portStr)
+	port = uint16(p)
+	return
+}
+
+// IntranetIP() 获取所有局域网ip
+func IntranetIP() (ips []string, err error) {
+	ips = make([]string, 0)
+	ifaces, e := net.Interfaces()
+	if e != nil {
+		return ips, e
+	}
+	for _, iface := range ifaces {
+		if iface.Flags&net.FlagUp == 0 {
+			continue // interface down
+		}
+		if iface.Flags&net.FlagLoopback != 0 {
+			continue // loopback interface
+		}
+		if strings.HasPrefix(iface.Name, "docker") || strings.HasPrefix(iface.Name, "w-") {
+			continue
+		}
+		addrs, e := iface.Addrs()
+		if e != nil {
+			return ips, e
+		}
+		for _, addr := range addrs {
+			var ip net.IP
+			switch v := addr.(type) {
+			case *net.IPNet:
+				ip = v.IP
+			case *net.IPAddr:
+				ip = v.IP
+			}
+			if ip == nil || ip.IsLoopback() {
+				continue
+			}
+			ip = ip.To4()
+			if ip == nil {
+				continue // not an ipv4 address
+			}
+			ipStr := ip.String()
+			if IsIntranetIP(ipStr) {
+				ips = append(ips, ipStr)
+			}
+		}
+	}
+	return ips, nil
+}
+
+// IsIntranetIP() 是否是局域网ip
+func IsIntranetIP(ipStr string) bool {
+	if strings.HasPrefix(ipStr, "10.") || strings.HasPrefix(ipStr, "192.168.") {
+		return true
+	}
+	if strings.HasPrefix(ipStr, "172.") {
+		// 172.16.0.0-172.31.255.255
+		arr := strings.Split(ipStr, ".")
+		if len(arr) != 4 {
+			return false
+		}
+
+		second, err := strconv.ParseInt(arr[1], 10, 64)
+		if err != nil {
+			return false
+		}
+
+		if second >= 16 && second <= 31 {
+			return true
+		}
+	}
+	return false
+}
+
+// ----------------------------------------------------------------------------------------

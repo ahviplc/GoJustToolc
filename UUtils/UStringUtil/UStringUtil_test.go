@@ -308,3 +308,189 @@ func TestStringMarshalJSON(t *testing.T) {
 	// "\u003c\u003e\u0026{}\"\""
 	// "<>&{}\"\""
 }
+
+// ----------------------------------------------------------------------------------------
+
+// Test UStringUtil.MD5()
+func TestMD5(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "t1",
+			args: args{s: "iiinsomnia"},
+			want: "483367436bc9a6c5256bfc29a24f955e",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := MD5(tt.args.s); got != tt.want {
+				t.Errorf("MD5() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+// Test UStringUtil.SHA1()
+func TestSHA1(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "t1",
+			args: args{s: "iiinsomnia"},
+			want: "7a4082bd79f2086af2c2b792c5e0ad06e729b9c4",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := SHA1(tt.args.s); got != tt.want {
+				t.Errorf("SHA1() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+// Test UStringUtil.Hash()
+func TestHash(t *testing.T) {
+	type args struct {
+		algo HashAlgo
+		s    string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "md5",
+			args: args{algo: AlgoMD5, s: "admin"},
+			want: "21232f297a57a5a743894a0e4a801fc3",
+		},
+		{
+			name: "sha1",
+			args: args{algo: AlgoSha1, s: "admin"},
+			want: "d033e22ae348aeb5660fc2140aec35850c4da997",
+		},
+		{
+			name: "sha224",
+			args: args{algo: AlgoSha224, s: "admin"},
+			want: "58acb7acccce58ffa8b953b12b5a7702bd42dae441c1ad85057fa70b",
+		},
+		{
+			name: "sha256",
+			args: args{algo: AlgoSha256, s: "admin"},
+			want: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+		},
+		{
+			name: "sha384",
+			args: args{algo: AlgoSha384, s: "admin"},
+			want: "9ca694a90285c034432c9550421b7b9dbd5c0f4b6673f05f6dbce58052ba20e4248041956ee8c9a2ec9f10290cdc0782",
+		},
+		{
+			name: "sha512",
+			args: args{algo: AlgoSha512, s: "admin"},
+			want: "c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Hash(tt.args.algo, tt.args.s); got != tt.want {
+				t.Errorf("Hash(%s) = %v, want %v", tt.name, got, tt.want)
+			}
+		})
+	}
+}
+
+// Test UStringUtil.HMAC()
+func TestHMAC(t *testing.T) {
+	hmac := HMAC("md5", "LC", "123456")
+	assert.Equal(t, "36fb7c781b238655b0fe8fc4d692f596", hmac, "Should be equal") // 断言为二者相等
+}
+
+// Test UStringUtil.AddSlashes()
+func TestAddSlashes(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "t1",
+			args: args{s: "Is your name O'Reilly?"},
+			want: `Is your name O\'Reilly?`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := AddSlashes(tt.args.s); got != tt.want {
+				t.Errorf("AddSlashes() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+// Test UStringUtil.StripSlashes()
+func TestStripSlashes(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "t1",
+			args: args{s: `Is your name O\'reilly?`},
+			want: "Is your name O'reilly?",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := StripSlashes(tt.args.s); got != tt.want {
+				t.Errorf("StripSlashes() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+// Test UStringUtil.QuoteMeta()
+func TestQuoteMeta(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "t1",
+			args: args{s: "Hello world. (can you hear me?)"},
+			want: `Hello world\. \(can you hear me\?\)`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := QuoteMeta(tt.args.s); got != tt.want {
+				t.Errorf("QuoteMeta() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+// ----------------------------------------------------------------------------------------
