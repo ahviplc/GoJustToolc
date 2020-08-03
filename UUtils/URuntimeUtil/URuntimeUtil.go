@@ -3,15 +3,17 @@ package URuntimeUtil
 import (
 	"bytes"
 	"fmt"
+	"github.com/ahviplc/GoJustToolc/UUtils/UStringUtil"
 	"math"
 	"net"
 	"os/exec"
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
-// go运行时工具类 runtime
+// go运行时工具类 runtime cmd命令执行
 // 系统工具类 system 含ip处理相关
 
 // 获取当前操作系统名称
@@ -226,6 +228,67 @@ func IsIntranetIP(ipStr string) bool {
 		}
 	}
 	return false
+}
+
+// ----------------------------------------------------------------------------------------
+
+// command 执行命令
+
+// CmdOut()
+// 返回字符串执行结果
+func CmdOut(name string, arg ...string) (string, error) {
+	cmd := exec.Command(name, arg...)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	return out.String(), err
+}
+
+// CmdOutBytes()
+// 返回字节切片执行结果
+func CmdOutBytes(name string, arg ...string) ([]byte, error) {
+	cmd := exec.Command(name, arg...)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	return out.Bytes(), err
+}
+
+// CmdOutNoLn()
+// 返回字符串执行结果
+// 输出结果 去掉换行,空格,回车,制表
+func CmdOutNoLn(name string, arg ...string) (out string, err error) {
+	out, err = CmdOut(name, arg...)
+	if err != nil {
+		return
+	}
+	return UStringUtil.TrimRightSpace(string(out)), nil
+}
+
+// CmdRunWithTimeout()
+// 带有超时时间的执行cmd
+func CmdRunWithTimeout(cmd *exec.Cmd, timeout time.Duration) (error, bool) {
+	done := make(chan error)
+	go func() {
+		fmt.Println("CmdRunWithTimeout() run...")
+		done <- cmd.Wait()
+	}()
+
+	var err error
+	select {
+	case <-time.After(timeout):
+		//timeout
+		if err = cmd.Process.Kill(); err != nil {
+			fmt.Printf("failed to kill: %s, error: %s", cmd.Path, err)
+		}
+		go func() {
+			<-done // allow goroutine to exit
+		}()
+		fmt.Printf("process:%s killed", cmd.Path)
+		return err, true
+	case err = <-done:
+		return err, false
+	}
 }
 
 // ----------------------------------------------------------------------------------------

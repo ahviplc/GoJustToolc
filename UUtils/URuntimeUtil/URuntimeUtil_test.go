@@ -3,8 +3,11 @@ package URuntimeUtil
 import (
 	"fmt"
 	"github.com/ahviplc/GoJustToolc/UConsole"
+	"os/exec"
 	"runtime"
+	"syscall"
 	"testing"
+	"time"
 )
 
 // Test URuntimeUtil.GetGOOS()
@@ -148,3 +151,50 @@ func TestIsIntranetIP(t *testing.T) {
 }
 
 // ----------------------------------------------------------------------------------------
+
+// Test URuntimeUtil.CmdOut()
+func TestCmdOut(t *testing.T) {
+	command := "go"
+	params := []string{"version"}
+	//执行cmd命令: go version
+	out, err := CmdOut(command, params...)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(out) // go version go1.13 windows/amd64
+}
+
+// Test URuntimeUtil.CmdOutBytes()
+func TestCmdOutBytes(t *testing.T) {
+	command := "go"
+	params := []string{"version"}
+	//执行cmd命令: go version
+	out, err := CmdOutBytes(command, params...)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(out) // [103 111 32 118 101 114 115 105 111 110 32 103 111 49 46 49 51 32 119 105 110 100 111 119 115 47 97 109 100 54 52 10]
+}
+
+// Test URuntimeUtil.CmdOutNoLn()
+func TestCmdOutNoLn(t *testing.T) {
+	command := "go"
+	params := []string{"version"}
+	//执行cmd命令: go version
+	out, err := CmdOutNoLn(command, params...)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(out) // go version go1.13 windows/amd64
+}
+
+// Test URuntimeUtil.CmdRunWithTimeout()
+// todo 待完善测试用例
+func TestCmdRunWithTimeout(t *testing.T) {
+	cmd := exec.Command("go", "env")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: false}
+	cmd.Start() // attention!
+	CmdRunWithTimeout(cmd, time.Duration(10)*time.Second)
+	// 睡眠
+	// time.Sleep(time.Hour * 1)
+}
