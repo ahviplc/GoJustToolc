@@ -48,12 +48,85 @@ func TestGetNowDateTimeCST(t *testing.T) {
 	UConsole.PrintAStraightLine()
 }
 
+// Test UDateTimeUtil.GetNowDateTimeCSTRFC3339()
+func TestGetNowDateTimeCSTRFC3339(t *testing.T) {
+	outTime := GetNowDateTimeCSTRFC3339()
+	UConsole.PrintTypeAndValue(outTime)
+	// 类型(Type):string  值(Value):2020-07-31T10:38:45+08:00
+	UConsole.PrintAStraightLine()
+}
+
 // Test UDateTimeUtil.GetNowDateTimeUTC()
 func TestGetNowDateTimeUTC(t *testing.T) {
 	outTime := GetNowDateTimeUTC()
 	UConsole.PrintTypeAndValue(outTime)
 	// 类型(Type):time.Time  值(Value):2020-07-03 15:38:00 +0000 UTC
 	UConsole.PrintAStraightLine()
+}
+
+// Test UDateTimeUtil.ToRFC3339()
+func TestToRFC3339(t *testing.T) {
+	outTime := GetGivenTime("20200703142238", "20060102150405")
+	outTimeStr := TimeToStrTime(outTime, "20060102150405")
+	outRFC3339 := ToRFC3339(outTimeStr, "20060102150405")
+	UConsole.PrintTypeAndValue(outRFC3339)
+	// 类型(Type):string  值(Value):2020-07-03T14:22:38+08:00
+	UConsole.PrintAStraightLine()
+}
+
+// Test UDateTimeUtil.RFC3339To()
+func TestRFC3339To(t *testing.T) {
+	outTime := GetNowDateTimeCSTRFC3339()
+	out := RFC3339To(outTime, DefaultLayout)
+	UConsole.PrintTypeAndValue(out)
+	// 类型(Type):string  值(Value):2020-07-31 11:02:10
+	UConsole.PrintAStraightLine()
+}
+
+// Test UDateTimeUtil.RFC3339ToUnix()
+func TestRFC3339ToUnix(t *testing.T) {
+	outTime := GetNowDateTimeCSTRFC3339()
+	out := RFC3339ToUnix(outTime)
+	UConsole.PrintTypeAndValue(out)
+	// 类型(Type):int64  值(Value):1596164651
+	// 时间戳对应时间: 2020-07-31 11:04:11
+	UConsole.PrintAStraightLine()
+}
+
+// Test UDateTimeUtil.UFormat()
+func TestUFormat(t *testing.T) {
+	//自定义格式的万能转换时间函数
+	tm := UFormat(GetNowDateTimeCST(), "2006-01-02 15:04:05")
+	fmt.Println(tm)
+	tm1 := UFormat(GetNowDateTimeCST(), "2006-01-02")
+	fmt.Println(tm1)
+	tm2 := UFormat(GetNowDateTimeCST(), "15:04:05")
+	fmt.Println(tm2)
+	tm3 := UFormat(GetNowDateTimeCST(), "2006/01/02 15:04:05")
+	fmt.Println(tm3)
+	// 输出:
+	// 2020-07-31 11:32:35
+	// 2020-07-31
+	// 11:32:35
+	// 2020/07/31 11:32:35
+}
+
+// Test UDateTimeUtil.GetUFormat()
+func TestGetUFormat(t *testing.T) {
+	//自定义格式的万能转换时间函数
+	tm := GetUFormat(GetNowDateTimeCST(), "2006-01-02 15:04:05")
+	fmt.Println(tm)
+	tm1 := GetUFormat(GetNowDateTimeCST(), "2006-01-02")
+	fmt.Println(tm1)
+	tm2 := GetUFormat(GetNowDateTimeCST(), "15:04:05")
+	fmt.Println(tm2)
+	tm3 := GetUFormat(GetNowDateTimeCST(), "2006/01/02 15:04:05")
+	fmt.Println(tm3)
+	// 输出:
+	// 2020-07-31 11:32:35
+	// 2020-07-31
+	// 11:32:35
+	// 2020/07/31 11:32:35
 }
 
 // Test UDateTimeUtil.GetGivenTime()
@@ -105,30 +178,35 @@ func TestGetDaysLeftThisYear(t *testing.T) {
 func TestIsLeapYear(t *testing.T) {
 	UConsole.Log(IsLeapYear(2019)) // false
 	UConsole.Log(IsLeapYear(2020)) // true
+	UConsole.PrintAStraightLine()
 }
 
 // Test UDateTimeUtil.GetNowSecondTimeStamp()
 func TestGetNowSecondTimeStamp(t *testing.T) {
 	UConsole.PrintTypeAndValue(GetNowSecondTimeStamp())
 	// 类型(Type):int64  值(Value):1593767272
+	UConsole.PrintAStraightLine()
 }
 
 // Test UDateTimeUtil.GetNowMilliSecondTimeStamp()
 func TestGetNowMilliSecondTimeStamp(t *testing.T) {
 	UConsole.PrintTypeAndValue(GetNowMilliSecondTimeStamp())
 	// 类型(Type):int64  值(Value):1593767290011
+	UConsole.PrintAStraightLine()
 }
 
 // Test UDateTimeUtil.GetNowNanoTimeStamp()
 func TestGetNowNanoTimeStamp(t *testing.T) {
 	UConsole.PrintTypeAndValue(GetNowNanoTimeStamp())
 	// 类型(Type):int64  值(Value):1593767333204879600
+	UConsole.PrintAStraightLine()
 }
 
 // Test UDateTimeUtil.GetTimeStamp()
 func TestGetTimeStamp(t *testing.T) {
 	UConsole.PrintTypeAndValue(GetTimeStamp(NowDateTime(), DefaultLayout))
 	// 类型(Type):int64  值(Value):1593790426
+	UConsole.PrintAStraightLine()
 }
 
 // Test UDateTimeUtil.GetMilliSecondTimeStamp()
@@ -136,6 +214,7 @@ func TestGetTimeStamp(t *testing.T) {
 func TestGetMilliSecondTimeStamp(t *testing.T) {
 	UConsole.PrintTypeAndValue(GetMilliSecondTimeStamp(NowDateTime(), DefaultLayout))
 	// 类型(Type):int64  值(Value):1593790426000
+	UConsole.PrintAStraightLine()
 }
 
 // Test UDateTimeUtil.GetNanoTimeStamp()
@@ -143,6 +222,26 @@ func TestGetMilliSecondTimeStamp(t *testing.T) {
 func TestGetNanoTimeStamp(t *testing.T) {
 	UConsole.PrintTypeAndValue(GetNanoTimeStamp(NowDateTime(), DefaultLayout))
 	// 类型(Type):int64  值(Value):1593790426000000000
+	UConsole.PrintAStraightLine()
+}
+
+// Test UDateTimeUtil.GetNanoTimeStamp()
+func TestToUnix(t *testing.T) {
+	outTime := GetGivenTime("20200703142238", "20060102150405")
+	outTimeStr := TimeToStrTime(outTime, "20060102150405")
+	outUnix := ToUnix(outTimeStr, "20060102150405")
+	UConsole.PrintTypeAndValue(outUnix)
+	// 类型(Type):int64  值(Value):1593757358
+	// 时间戳对应时间: 2020-07-03 14:22:38
+	UConsole.PrintAStraightLine()
+
+	outTime2 := GetGivenTime("20200703142238", "20060102150405")
+	outTimeStr2 := TimeToStrTime(outTime2, DefaultLayout)
+	outUnix2 := ToUnix(outTimeStr2, DefaultLayout)
+	UConsole.PrintTypeAndValue(outUnix2)
+	// 类型(Type):int64  值(Value):1593757358
+	// 时间戳对应时间: 2020-07-03 14:22:38
+	UConsole.PrintAStraightLine()
 }
 
 // Test UDateTimeUtil.AddDataTime()
@@ -280,4 +379,52 @@ func TestStrTimeToTime(t *testing.T) {
 	fmt.Printf("类型:%T  时间:%v", outTime, outTime) // 类型:time.Time  时间:2020-07-03 15:09:40 +0000 CST
 	fmt.Println()
 	UConsole.PrintAStraightLine()
+}
+
+// Test UDateTimeUtil.GetDateTimeStart()
+func TestGetDateTimeStart(t *testing.T) {
+	outTime := GetGivenTime("20200703142238", "20060102150405")
+	outTimeStr := TimeToStrTime(outTime, "20060102150405")
+	outUnix, _ := GetDateTimeStart(outTimeStr, "20060102150405")
+	UConsole.PrintTypeAndValue(outUnix)
+	// 类型(Type):string  值(Value):2020-07-03 00:00:00
+	UConsole.PrintAStraightLine()
+
+	// 当前时间
+	outUnix2, _ := GetDateTimeStart(TimeToStrTime(GetNowDateTimeCST(), "20060102150405"), "20060102150405")
+	UConsole.PrintTypeAndValue(outUnix2)
+	// 类型(Type):string  值(Value):2020-07-31 00:00:00
+	UConsole.PrintAStraightLine()
+}
+
+// Test UDateTimeUtil.GetDateTimeEnd()
+func TestGetDateTimeEnd(t *testing.T) {
+	outTime := GetGivenTime("20200703142238", "20060102150405")
+	outTimeStr := TimeToStrTime(outTime, "20060102150405")
+	outUnix, _ := GetDateTimeEnd(outTimeStr, "20060102150405")
+	UConsole.PrintTypeAndValue(outUnix)
+	// 类型(Type):string  值(Value):2020-07-03 23:59:59
+	UConsole.PrintAStraightLine()
+
+	// 当前时间
+	outUnix2, _ := GetDateTimeEnd(TimeToStrTime(GetNowDateTimeCST(), "20060102150405"), "20060102150405")
+	UConsole.PrintTypeAndValue(outUnix2)
+	// 类型(Type):string  值(Value):2020-07-31 23:59:59
+	UConsole.PrintAStraightLine()
+}
+
+// Test UDateTimeUtil.TimeStampToTimeStr()
+func TestTimeStampToTimeStr(t *testing.T) {
+	out := GetNowSecondTimeStamp()
+	UConsole.Log(out)                     // 1596186309
+	UConsole.Log(TimeStampToTimeStr(out)) // 2020-07-31 17:05:09
+}
+
+// Test UDateTimeUtil.WeekAround()
+func TestWeekAround(t *testing.T) {
+	monday, sunday := WeekAround()
+	UConsole.Log(monday, "-", sunday)
+	// now time: 2020年8月3日13:48:40
+	// 输出:
+	// 20200803-20200809
 }

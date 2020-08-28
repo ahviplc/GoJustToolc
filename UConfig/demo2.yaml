@@ -1,0 +1,8 @@
+userName: "LC"
+address: "上海"
+sex: 1
+company:
+  name: "LC公司"
+  employeeId: "0001"
+  department:
+    - "技术部"

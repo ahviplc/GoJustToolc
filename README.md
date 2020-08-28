@@ -64,7 +64,7 @@ module your_project_name
 go 1.14
 
 require (
-    github.com/ahviplc/GoJustToolc v0.2.0
+    github.com/ahviplc/GoJustToolc v0.3.0
 )
 ```
 > 也可使用 github.com/ahviplc/GoJustToolc latest 获取最新版
@@ -98,6 +98,14 @@ c8c6dadb LC <ahlc@sina.cn> on 2020/6/25 at 13:31
 3d867825 LC <ahlc@sina.cn> on 2020/7/4 at 11:47
 ```
 
+### release v0.3.0
+
+> 在34commits处 tag v0.3.0 release.
+
+```markdown
+f3daefea ahviplc <ahlc@sina.cn> on 2020/8/3 at 17:06
+```
+
 ### release vx.x.x
 
 > 在Xcommits处 tag vx.x.x release.
@@ -110,6 +118,6 @@ TODO
 ```markdown
 By LC
 寄语:一人一世界,一树一菩提!~LC
-Version 0.1 From 20200625
+Version 0.1.0 From 20200625
 ```
 
