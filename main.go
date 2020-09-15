@@ -6,12 +6,15 @@ import (
 	"github.com/ahviplc/GoJustToolc/UConsole"
 	"github.com/ahviplc/GoJustToolc/UMode"
 	"github.com/ahviplc/GoJustToolc/UUtils/UDateTimeUtil"
+	"github.com/ahviplc/GoJustToolc/UUtils/USnowFlakeUtil"
 	"github.com/ahviplc/GoJustToolc/UUtils/UStringUtil"
+	"github.com/ahviplc/GoJustToolc/UUtils/UUUIDUtil"
 	"github.com/tidwall/gjson"
 	"time"
 )
 
 // some test main
+
 func main() {
 	// ToUpper ToLower
 	fmt.Println(UStringUtil.ToUpper("ah vip lc"))
@@ -68,5 +71,30 @@ func main() {
 	UConsole.Log(UConfig.GetJson(v, "message", false))           // I am root
 	UConsole.Log(UConfig.GetJson(v, "contents.post1", false))    // 1
 	UConsole.Log(UConfig.GetJson(v, "contents2.#.post1", false)) // ["3-1","3-2"]
+	UConsole.PrintAStraightLine()
+
+	// UUUIDUtil uuid
+	uuid, _ := UUUIDUtil.GenerateUUID()
+	UConsole.Log(uuid) // 71444b3f-2b89-e3b8-08dd-b096d5ab838f
+	// 不带-
+	uuid2, _ := UUUIDUtil.GenerateSimpleUUID()
+	UConsole.Log(uuid2) // beaa273bf93d9d2bf840802285900ccf
+	UConsole.PrintAStraightLine()
+
+	// USnowFlakeUtil snowflake
+	node, err := USnowFlakeUtil.NewNode(0)
+	if err != nil {
+		fmt.Printf("error creating NewNode, %s", err)
+	}
+	id := node.Generate()
+	fmt.Printf("Int64    : %#v \n", id.Int64())
+	fmt.Printf("String   : %#v \n", id.String())
+	fmt.Printf("Base2    : %#v \n", id.Base2())
+	fmt.Printf("Base32   : %#v \n", id.Base32())
+	fmt.Printf("Base36   : %#v \n", id.Base36())
+	fmt.Printf("Base58   : %#v \n", id.Base58())
+	fmt.Printf("Base64   : %#v \n", id.Base64())
+	fmt.Printf("Bytes    : %#v \n", id.Bytes())
+	fmt.Printf("IntBytes : %#v \n", id.IntBytes())
 	UConsole.PrintAStraightLine()
 }
