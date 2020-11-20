@@ -88,6 +88,7 @@ git checkout master
 git merge --no-ff -m "release v0.#.#" dev
 
 3.git push
+git push origin master
 ```
 
 ## about me
