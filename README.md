@@ -79,6 +79,17 @@ require (
 3: go run main.go
 ```
 
+# pr步骤
+```markdown
+1.切换分支
+git checkout master
+
+2.git merge
+git merge --no-ff -m "release v0.#.#" dev
+
+3.git push
+```
+
 ## about me
 ```markdown
 By LC
