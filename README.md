@@ -79,41 +79,6 @@ require (
 3: go run main.go
 ```
 
-## changelog 
-
-### release v0.1.0
-
-> 在5commits处 tag v0.1.0 release.
-
-```markdown
-update go.mod.
-c8c6dadb LC <ahlc@sina.cn> on 2020/6/25 at 13:31
-```
-
-### release v0.2.0
-
-> 在19commits处 tag v0.2.0 release.
-
-```markdown
-3d867825 LC <ahlc@sina.cn> on 2020/7/4 at 11:47
-```
-
-### release v0.3.0
-
-> 在34commits处 tag v0.3.0 release.
-
-```markdown
-f3daefea ahviplc <ahlc@sina.cn> on 2020/8/3 at 17:06
-```
-
-### release vx.x.x
-
-> 在Xcommits处 tag vx.x.x release.
-
-```markdown
-TODO
-```
-
 ## about me
 ```markdown
 By LC
