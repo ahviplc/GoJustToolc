@@ -89,6 +89,15 @@ git merge --no-ff -m "release v0.#.#" dev
 
 3.git push
 git push origin master
+
+4.然后再次切换到dev
+git checkout dev
+
+5.执行一次git merge master 同步主库最新提交日志,变更到和主库一致的最新git状态
+git merge master
+
+6.接下来在分支dev进行愉快的再次开发维护吧.
+QAQ
 ```
 
 ## about me
